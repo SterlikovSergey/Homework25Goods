@@ -10,7 +10,7 @@
 <h1><%= " Добавить товар " %>
 </h1>
 <br/>
-<form action="/addOrders.jsp" method="post">
+<form action="/products" method="post">
         <div class="mb-3">
             <label for="exampleInput" class="form-label">Код товара</label>
             <input type="text" class="form-control" id="exampleInput" name="productId" aria-describedby="orderIdHelp">
@@ -21,10 +21,11 @@
             <input type="text" class="form-control" id="exampleInputName" name="productName" aria-describedby="orderNameHelp">
             <div id="orderNameHelp" class="form-text">Введите наименование товара.</div>
         </div>
-        <div class="mb-3 form-check">
-            <input type="checkbox" class="form-check-input" id="exampleCheck1" name="setCategory">
-            <label class="form-check-label" for="exampleCheck1">Присвоить категорию</label>
-        </div>
+    <div class="mb-3">
+        <label for="exampleInputCategory" class="form-label">Категория товара</label>
+        <input type="text" class="form-control" id="exampleInputCategory" name="category" aria-describedby="orderCategoryHelp">
+        <div id="orderCategoryHelp" class="form-text">Введите категорию товара 1, 2, Null.</div>
+    </div>
         <button type="submit" class="btn btn-primary">Сохранить</button>
 </form>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"

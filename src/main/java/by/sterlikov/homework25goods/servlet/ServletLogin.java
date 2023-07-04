@@ -21,7 +21,7 @@ public class ServletLogin extends HttpServlet {
         var login = req.getParameter("login");
         if (login.isEmpty()){
             req.getRequestDispatcher("error.jsp").forward(req,resp);
-        } else {
+        } else  {
             req.getSession().setAttribute("name", req.getParameter("login"));
             req.getRequestDispatcher("addProducts.jsp").forward(req, resp);
         }

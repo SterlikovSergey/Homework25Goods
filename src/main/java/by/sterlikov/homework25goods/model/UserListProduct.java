@@ -9,6 +9,12 @@ import java.util.List;
 @AllArgsConstructor
 
 public class UserListProduct {
+    private int id;
     private String name;
     private List<Product> products;
+
+    public UserListProduct(String name, List<Product> products) {
+        this.name = name;
+        this.products = products;
+    }
 }

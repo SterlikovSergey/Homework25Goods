@@ -31,12 +31,17 @@ public class ServletAddProduct extends HttpServlet {
         var category = req.getParameter("category");
 /*        int idUser = getIdUser(login);*/
         List<Product> products = List.of(new Product(Integer.parseInt(productId),productName,Integer.parseInt(category)));
-        UserListProduct userListProduct = new UserListProduct(productName,products);
+        UserListProduct userListProduct = new UserListProduct((String) login,products);
+
         try {
-            if(userService.findUsers((String) login)){
-                userService.addListProduct(userListProduct);
+            String existUser = userService.findUsers((String) login).getName();
+            int  existId = userService.findUsers((String) login).getId();
+            UserListProduct listProduct = new UserListProduct(existId,products);
+            if(existUser.equalsIgnoreCase((String) login)){
+                userService.addListProduct(listProduct);
             } else {
                 userService.addUserListProduct(userListProduct);
+
             }
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);

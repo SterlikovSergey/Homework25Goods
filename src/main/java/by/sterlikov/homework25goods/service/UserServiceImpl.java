@@ -3,6 +3,7 @@ package by.sterlikov.homework25goods.service;
 import by.sterlikov.homework25goods.model.Product;
 import by.sterlikov.homework25goods.model.User;
 import by.sterlikov.homework25goods.model.UserListProduct;
+import com.mysql.cj.x.protobuf.MysqlxPrepare;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 public class UserServiceImpl implements UserService {
+    User existUser;
 
     @Override
     public void addProduct(User user, Product product) throws ClassNotFoundException, SQLException {
@@ -28,15 +30,13 @@ public class UserServiceImpl implements UserService {
             preparedStatement1.executeUpdate();*/
     }
 
-    Boolean existUser;
-
     @Override
     public void addUserListProduct(UserListProduct user) throws ClassNotFoundException {
         Class.forName("com.mysql.cj.jdbc.Driver");
-        String queryInsertProduct = "INSERT INTO Products (id_user, id_product, name_product, id_category) VALUES (?,?,?,?)";
+        String queryInsert = "INSERT INTO Products (id_user, id_product, name_product, id_category) VALUES (?,?,?,?)";
         try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_homework25Goods"
                 , "root", "root")) {
-            PreparedStatement preparedStatement = connection.prepareStatement(queryInsertProduct);
+            PreparedStatement preparedStatement = connection.prepareStatement(queryInsert);
             preparedStatement.setInt(1, user.getId());
             for (Product products : user.getProducts()) {
                 preparedStatement.setInt(2, products.getId());
@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void addListProduct(UserListProduct user) throws ClassNotFoundException {
         Class.forName("com.mysql.cj.jdbc.Driver");
-        String queryInsertProduct = "INSERT INTO Products ( id_product, name_product, id_category) VALUES (?,?,?,?)";
+        String queryInsertProduct = "INSERT INTO Products ( id_user,id_product, name_product, id_category) VALUES (?,?,?,?)";
         try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_homework25Goods"
                 , "root", "root")) {
             PreparedStatement preparedStatement = connection.prepareStatement(queryInsertProduct);
@@ -73,35 +73,26 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
-    public List<User> findUsers() throws ClassNotFoundException {
-        return null;
-    }
 
     @Override
-    public Boolean findUsers(String login) throws ClassNotFoundException {
+    public User findUsers(String login) throws ClassNotFoundException {
         Class.forName("com.mysql.cj.jdbc.Driver");
-        String query = "SELECT * FROM Users";
+        String query = "SELECT * FROM Users WHERE name_user = ?";
         try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_homework25Goods"
                 , "root", "root")) {
             List<User> users = new ArrayList<>();
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(query);
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, login);
+            ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 int id;
                 String name;
                 id = resultSet.getInt("id_user");
                 name = resultSet.getString("name_user");
-                User user = new User(id, name);
-                users.add(user);
-                for (User i : users) {
-                    if (i.getName().equalsIgnoreCase(login)) {
-                        existUser = true;
-                    }
-                    existUser = false;
-                }
+                existUser = new User(id, name);
             }
             return existUser;
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

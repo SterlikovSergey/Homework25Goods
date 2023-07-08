@@ -13,10 +13,8 @@ public interface UserService {
     public void addUserListProduct(UserListProduct user) throws ClassNotFoundException;
     public void addListProduct(UserListProduct user) throws ClassNotFoundException;
 
-    public List<User> findUsers() throws ClassNotFoundException;
-
     public Map<User,Product> findAllListProduct();
-    public Boolean findUsers(String login) throws ClassNotFoundException;
+    public User findUsers(String login) throws ClassNotFoundException;
 
             ;
 

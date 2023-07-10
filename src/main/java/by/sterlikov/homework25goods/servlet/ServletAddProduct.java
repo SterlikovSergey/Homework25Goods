@@ -15,9 +15,11 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
 @WebServlet(value = "/products")
 public class ServletAddProduct extends HttpServlet {
     UserService userService;
+
     @Override
     public void init() throws ServletException {
         userService = new UserServiceImpl();
@@ -26,46 +28,17 @@ public class ServletAddProduct extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         var login = req.getSession().getAttribute("login");
+        var existId = (int) req.getSession().getAttribute("existId");
         var productId = req.getParameter("productId");
         var productName = req.getParameter("productName");
         var category = req.getParameter("category");
-/*        int idUser = getIdUser(login);*/
-        List<Product> products = List.of(new Product(Integer.parseInt(productId),productName,Integer.parseInt(category)));
-        UserListProduct userListProduct = new UserListProduct((String) login,products);
-
+        List<Product> products = List.of(new Product(Integer.parseInt(productId), productName, Integer.parseInt(category)));
+        UserListProduct existIdListProduct = new UserListProduct(existId, (String) login, products);
         try {
-            String existUser = userService.findUsers((String) login).getName();
-            int  existId = userService.findUsers((String) login).getId();
-            UserListProduct listProduct = new UserListProduct(existId,products);
-            if(existUser.equalsIgnoreCase((String) login)){
-                userService.addListProduct(listProduct);
-            } else {
-                userService.addUserListProduct(userListProduct);
-
-            }
+            userService.addListProduct(existIdListProduct);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-        req.getRequestDispatcher("success.jsp").forward(req,resp);
-/*        User user = new User((String) login);
-        Product product = new Product(Integer.parseInt(productId),productName,Integer.parseInt(category));
-        try {
-            userService.addProduct(user,product);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        req.getRequestDispatcher("success.jsp").forward(req,resp);*/
+        req.getRequestDispatcher("success.jsp").forward(req, resp);
     }
-
-/*    private int getIdUser(Object login) {
-        int idUser = 0;
-        if (equals(login) == "sergey".equalsIgnoreCase((String) login)){
-            idUser = 1;
-        } else if (equals(login) == "andrey".equalsIgnoreCase((String) login)){
-            idUser = 2;
-        }
-        return idUser;
-    }*/
 }

@@ -9,7 +9,7 @@ import java.util.List;
 @AllArgsConstructor
 
 public class UserListProduct {
-    private int id;
+    private Integer id;
     private String name;
     private List<Product> products;
 
@@ -17,7 +17,8 @@ public class UserListProduct {
         this.name = name;
         this.products = products;
     }
-    public UserListProduct(int id,List<Product> products){
+
+    public UserListProduct(Integer id, List<Product> products) {
         this.id = id;
         this.products = products;
     }

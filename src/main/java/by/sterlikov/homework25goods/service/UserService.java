@@ -9,9 +9,9 @@ import java.util.Map;
 public interface UserService {
     public void addUser(User user) throws ClassNotFoundException;
 
-    public void addListProduct(UserListProduct user) throws ClassNotFoundException;
+    public void addUserListProduct(UserListProduct user) throws ClassNotFoundException;
 
     public Map<User, Product> findAllListProduct();
 
-    public User findUsers(String login) throws ClassNotFoundException;
+    public User findUserByLogin(String login) throws ClassNotFoundException;
 }

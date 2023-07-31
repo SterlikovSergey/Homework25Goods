@@ -3,7 +3,6 @@ package by.sterlikov.homework25goods.servlet;
 import by.sterlikov.homework25goods.model.User;
 import by.sterlikov.homework25goods.service.UserService;
 import by.sterlikov.homework25goods.service.UserServiceImpl;
-import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -16,7 +15,7 @@ import java.io.IOException;
 public class ServletLogin extends HttpServlet {
 
     UserService userService;
-    User user;
+    User newUser;
 
     @Override
     public void init() throws ServletException {
@@ -36,19 +35,19 @@ public class ServletLogin extends HttpServlet {
             req.getRequestDispatcher("error.jsp").forward(req, resp);
         } else {
             try {
-                String existLogin = userService.findUsers(login).getName();
-                System.out.println(existLogin);
-                if (existLogin.equalsIgnoreCase(login)) {
-                    int existId = userService.findUsers(login).getId();
+                String existsLogin = userService.findUserByLogin(login).getName();
+                System.out.println(existsLogin);
+                if (existsLogin != null) {
+                    int existsId = userService.findUserByLogin(login).getId();
                     req.getSession().setAttribute("name", req.getParameter("login"));
-                    req.getSession().setAttribute("existId", existId);
+                    req.getSession().setAttribute("existsId", existsId);
                     req.getRequestDispatcher("addProducts.jsp").forward(req, resp);
                 } else {
-                    user = new User(login);
-                    userService.addUser(user);
-                    int newExistId = userService.findUsers(login).getId();
+                    newUser = new User(login);
+                    userService.addUser(newUser);
+                    int newExistId = userService.findUserByLogin(login).getId();
                     req.getSession().setAttribute("name", req.getParameter("login"));
-                    req.getSession().setAttribute("existId", newExistId);
+                    req.getSession().setAttribute("existsId", newExistId);
                     req.getRequestDispatcher("addProducts.jsp").forward(req, resp);
                 }
             } catch (ClassNotFoundException e) {

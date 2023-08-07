@@ -7,10 +7,11 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-  <head>
-    <title>$Title$</title>
-  </head>
-  <body>
-  $END$
-  </body>
+<head>
+    <title>Error page</title>
+</head>
+<body>
+<h1>Введи имя пользователя</h1>
+<a href="index.jsp">Ввести имя пользователя</a>
+</body>
 </html>
